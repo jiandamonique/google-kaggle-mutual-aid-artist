@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jianda Monique · Data Scientist · Author · Artist</title>
+    <meta name="description" content="Jianda Monique — Jr. Data Scientist, Author, and Multidisciplinary Artist. 2021 Kaggle/Google BIPOC Data Fellow. Creator of the Artist Mutual Aid Project and author of My Beautiful Device.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="css2" rel="stylesheet">
+    <style>
+    /* ─────────────────────────────────────────
+    DESIGN  
+    ───────────────────────────────────────── */
+    :root {
+      --cream:       #f5f0e4;
+      --parchment:   #ede8dc;
+      --sage:        #6b9e8a;
+      --sage-light:  #a8c8bb;
+      --sage-dark:   #3d6b5a;
+      --terra:       #c07a52;
+      --terra-light: #dba882;
+      --dusty-blue:  #7193a4;
+      --sky:         #b8d4e0;
+      --deep:        #2d3047;
+      --muted:       #7a7468;
+      --gold:        #d4a84b;
+      --gold-soft:   #e8c87a;
+      --border:      rgba(107,158,138,0.2);
+      --shadow:      0 4px 24px rgba(45,48,71,0.08);
+      --shadow-sm:   0 2px 12px rgba(45,48,71,0.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--deep);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* Ambient watercolor blobs — the Ghibli sky feeling */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20vh;
+      right: -10vw;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(ellipse at center, rgba(178,212,224,0.22) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -15vh;
+      left: -10vw;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(ellipse at center, rgba(107,158,138,0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── STREAM OVERLAY PORTRAIT ── */
+    .stream-portrait {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(107,158,138,0.5);
+      overflow: hidden;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(45,48,71,0.18);
+      opacity: 0.88;
+      transition: opacity 0.2s;
+    }
+    .stream-portrait:hover { opacity: 1; }
+    .stream-portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(245,240,228,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--deep);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-logo span { color: var(--sage); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.6rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--sage); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3.5rem;
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      color: var(--sage);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 500;
+      line-height: 1.18;
+      color: var(--deep);
+      margin-bottom: 0.6rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    /* Rotating identity tags */
+    .identity-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.2rem 0 1.6rem;
+    }
+    .id-tag {
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .id-tag.green  { background: rgba(107,158,138,0.15); color: var(--sage-dark); border: 1px solid rgba(107,158,138,0.3); }
+    .id-tag.terra  { background: rgba(192,122,82,0.12); color: #8c4a25; border: 1px solid rgba(192,122,82,0.25); }
+    .id-tag.blue   { background: rgba(113,147,164,0.12); color: #3d5f70; border: 1px solid rgba(113,147,164,0.25); }
+    .id-tag.gold   { background: rgba(212,168,75,0.12); color: #7a5c0e; border: 1px solid rgba(212,168,75,0.25); }
+
+    .hero-quote {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--muted);
+      border-left: 3px solid var(--sage-light);
+      padding-left: 1rem;
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-links {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.62rem 1.3rem;
+      border-radius: 0.4rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary  { background: var(--sage); color: #fff; }
+    .btn-primary:hover  { background: var(--sage-dark); }
+    .btn-terra    { background: var(--terra); color: #fff; }
+    .btn-terra:hover    { background: #a05e3a; }
+    .btn-outline  { background: transparent; color: var(--deep); border: 1.5px solid var(--border); }
+    .btn-outline:hover  { border-color: var(--sage); color: var(--sage); }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      position: relative;
+      height: 48px;
+      overflow: visible;
+      margin: 0.5rem 0;
+    }
+    .section-divider svg { position: absolute; width: 100%; height: 100%; }
+
+    /* ── GENERIC SECTION ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--terra);
+      margin-bottom: 0.6rem;
+    }
+
+    section h2 {
+      font-family: 'Lora', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--deep);
+    }
+
+    section p {
+      color: var(--muted);
+      font-size: 0.97rem;
+      max-width: 640px;
+      margin-bottom: 1rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-bg {
+      background: var(--parchment);
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      position: relative;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.4rem;
+    }
+    .about-card h3 {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      color: var(--sage-dark);
+      margin-bottom: 0.5rem;
+    }
+    .about-card p { margin-bottom: 0; font-size: 0.9rem; }
+
+    /* Community illustration accent */
+    .community-art {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .community-art-frame {
+      flex-shrink: 0;
+      width: 110px;
+      height: 110px;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 2px solid rgba(107,158,138,0.3);
+      box-shadow: var(--shadow-sm);
+    }
+    .community-art-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .community-art-caption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* ── BOOK ── */
+    .book-card {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2rem;
+      background: var(--parchment);
+      border: 1px solid rgba(212,168,75,0.25);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-top: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 600px) { .book-card { grid-template-columns: 1fr; } }
+
+    .book-cover {
+      border-radius: 0.6rem;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(45,48,71,0.18);
+    }
+    .book-cover img { width: 100%; display: block; }
+
+    .book-info h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--deep);
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+    .book-info .book-sub {
+      font-size: 0.82rem;
+      color: var(--terra);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .book-info p {
+      font-size: 0.92rem;
+      margin-bottom: 1.2rem;
+    }
+    .book-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .book-tag {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .book-buy {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .march-note {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+    .project-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sage);
+      margin-bottom: 0.5rem;
+    }
+    .project-card h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      color: var(--deep);
+      margin-bottom: 0.5rem;
+    }
+    .project-card p {
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+    .project-card a {
+      font-size: 0.82rem;
+      color: var(--sage-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .project-card a:hover { text-decoration: underline; }
+
+    .status-pill {
+      display: inline-block;
+      font-size: 0.68rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.06em;
+    }
+    .status-active { background: rgba(107,158,138,0.15); color: var(--sage-dark); }
+    .status-wip    { background: rgba(212,168,75,0.15);  color: #7a5c0e; }
+    .status-future { background: rgba(113,147,164,0.12); color: #3d5f70; }
+
+    /* ── RESEARCH / PUBLICATIONS ── */
+    .pub-list { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    .pub-item {
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 0.7rem;
+      padding: 1.2rem 1.4rem;
+      border-left: 4px solid var(--dusty-blue);
+    }
+    .pub-item h4 {
+      font-family: 'Lora', serif;
+      font-size: 0.97rem;
+      font-weight: 500;
+      color: var(--deep);
+      margin-bottom: 0.3rem;
+    }
+    .pub-authors {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .pub-authors strong { color: var(--deep); font-weight: 600; }
+    .pub-venue {
+      font-size: 0.78rem;
+      color: var(--dusty-blue);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.6rem;
+    }
+    .pub-link {
+      font-size: 0.8rem;
+      color: var(--sage-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .pub-link:hover { text-decoration: underline; }
+
+    .open-source-item {
+      border-left-color: var(--sage);
+    }
+
+    /* ── SKILLS ── */
+    .skills-bg {
+      background: var(--parchment);
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .skill-group {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 0.7rem;
+      padding: 1.1rem 1.3rem;
+    }
+    .skill-group h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--terra);
+      margin-bottom: 0.6rem;
+    }
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .skill-pill {
+      font-size: 0.78rem;
+      background: rgba(107,158,138,0.1);
+      color: var(--deep);
+      padding: 0.2rem 0.55rem;
+      border-radius: 0.3rem;
+      border: 1px solid rgba(107,158,138,0.2);
+    }
+
+    /* ── CONNECT ── */
+    .connect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .connect-card {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.9rem 1.1rem;
+      background: var(--parchment);
+      border: 1px solid var(--border);
+      border-radius: 0.7rem;
+      text-decoration: none;
+      color: var(--deep);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .connect-card:hover { border-color: var(--sage); color: var(--sage-dark); transform: translateY(-2px); }
+    .connect-icon { font-size: 1.1rem; }
+
+    /* ── SUPPORT ── */
+    .support-strip {
+      background: linear-gradient(135deg, rgba(107,158,138,0.12), rgba(192,122,82,0.1));
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.8rem 2rem;
+      margin-top: 1.5rem;
+    }
+    .support-strip h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .support-strip p { margin-bottom: 1rem; }
+    .support-links { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    <footer>
+      position: relative;
+      z-index: 1;
+      background: var(--deep);
+      color: rgba(245,240,228,0.6);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      font-size: 0.83rem;
+    }
+    footer .footer-name {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+    footer a { color: var(--sage-light); text-decoration: none; }
+    footer a:hover { color: var(--cream); }
+    footer .footer-quote {
+      font-style: italic;
+      margin-top: 0.8rem;
+      color: rgba(245,240,228,0.4);
+    }
+
+    /* ── UTILITY ── */
+    .text-sage   { color: var(--sage); }
+    .text-terra  { color: var(--terra); }
+    .mt-sm { margin-top: 0.5rem; }
+    .mt-md { margin-top: 1rem; }
+    .mt-lg { margin-top: 2rem; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0.8rem 1rem; }
+      .nav-links { gap: 1rem; }
+      section { padding: 2.5rem 1.2rem; }
+      .hero { padding: 3rem 1.2rem 2rem; }
+    }
+  </style>
+  </head>
+  <body>
+    <!-- ── STREAM PORTRAIT (tucked in corner) ── -->
+    <div class="stream-portrait" title="Jianda Monique"> 
+      <!-- UPDATED IMAGE TAG BELOW -->
+      <img src="profile.jpg" alt="Jianda Monique" onerror="this.parentElement.style.background='var(--sage-light)'; this.style.display='none';"> 
+    </div>
+
+    <!-- ── NAV ── -->
+    <nav> <a href="#" class="nav-logo">Jianda <span>Monique</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#connect">Connect</a></li>
+      </ul>
+    </nav>
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <p class="hero-eyebrow">// jianda monique&nbsp; <br>
+      </p>
+      <h1> Blending art, spirit, and tech <br>
+        to <em>facilitate care, equity, &amp; whimsy</em> </h1>
+      <div class="identity-strip"> <span class="id-tag green">Jr. Data
+          Scientist</span> <span class="id-tag terra">Author, Artist,
+          Coach</span> <span class="id-tag blue">Public Health
+          Researcher</span> <span class="id-tag gold">2021
+          Kaggle/Google BIPOC Fellow</span> <span class="id-tag green">Transformative
+          Code &amp; Content</span> <span class="id-tag terra">Restorative
+          Justice Creative</span> </div>
+      <blockquote class="hero-quote"> "Each one, reach one. Each one,
+        teach one." </blockquote>
+      <div class="hero-links"> <a href="#projects" class="btn
+          btn-primary">Mutual Aid Project →</a> <a href="#book"
+          class="btn btn-terra">My Beautiful Device</a> <a
+          href="https://github.com/jiandamonique" class="btn
+          btn-outline">GitHub</a> </div>
+    </div>
+    <!-- ── ABOUT ── -->
+    <div class="about-bg" id="about">
+      <section>
+        <p class="section-label">// about</p>
+        <h2>Metaphysical, Multimedia, Data-Diver</h2>
+        <p> I'm Jianda Monique — a Full Stack Developer in training -
+          I've worked as a Jr. Data Scientist, holistic coach, writer,
+          musician, and multi-disciplinary artist based in the CA and
+          WA. My work lives at the intersection of data science,
+          community care, and creative expression. </p>
+        <!-- ADDED JULIA ELLIOTT IN THE PARAGRAPH BELOW -->
+        <p> I developed data science skills working with the UCSF
+          Epidemiology Team on public health modeling during COVID-19,
+          and deepened that foundation as a 2021 Kaggle/Google BIPOC
+          Data Fellow under mentors Prasun Kumar Mishra and Julia Elliott. The fellowship
+          sparked a project I'm still building: a mutual aid resource
+          directory for BIPOC and LGBTQ+ artists. </p>
+        <p> I've worked across the entertainment, nonprofit, education,
+          and tech industries — from MP3.com to UCSF to Amazon — always
+          finding ways to center community, creativity, and the belief
+          that <em>art heals</em>. </p>
+        <!-- Community illustration as page accent -->
+        <div class="community-art">
+          <div>
+            <div class="community-art-frame">
+              <!-- Placeholder for the vientoxsol community illustration -->
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#e8d5c4,#b8d4e0,#a8c8bb);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🦋</div>
+            </div>
+            <p class="community-art-caption"><br>
+            </p>
+          </div>
+          <div>
+            <p style="font-size:0.9rem; font-style:italic; color:var(--muted);"> "Software through Design Thinking and Artificial Intelligence are the alchemist's laboratory of the 21st century." — Drew Minkin </p>
+            <p style="font-size:0.9rem; font-style:italic; color:var(--muted); margin-top:0.5rem;"> "If they don't give you a seat at the table, bring a folding chair." — Shirley Chisholm </p>
+          </div>
+        </div>
+        <div class="about-grid mt-lg">
+          <div class="about-card">
+            <h3>🎓 Education &amp; Training</h3>
+            <p>UC Irvine (Film/Media Studies) · Pomona College (Media
+              Studies) · UMass Dartmouth (Women's &amp; Gender Studies)
+              · CSSSA at CalArts (Creative Writing &amp; Music)</p>
+          </div>
+          <div class="about-card">
+            <h3>🔬 Research Experience</h3>
+            <p>Jr. Data Scientist, UCSF Epidemiology Team (2020–2021) —
+              epidemiological modeling, statistical analysis, COVID-19
+              public health surveillance. Nominated: COVID-19 Data Hero.</p>
+          </div>
+          <div class="about-card">
+            <h3>💻 Tech Stack</h3>
+            <p>Python · R · HTML/CSS/JS · BeautifulSoup · Pandas ·
+              Jekyll · Git/GitHub · LaTeX · MATLAB · Tidyverse · Linux
+              CLI· Prompt Engineering · Overleaf<br>
+            </p>
+          </div>
+          <div class="about-card">
+            <h3>🎨 Creative Practice</h3>
+            <p>Published author · Vocalist (Tycho "Dive," Om Lounge 10)
+              · Musician · Published poet &amp; fiction writer · Busker
+              (Santa Monica Pier, Seattle Parks &amp; Rec) · SF Public
+              Libary Show Us Your Spines Fellow &amp; More<br>
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- ── BOOK ── -->
+    <section id="book">
+      <p class="section-label">// published work</p>
+      <h2>My Beautiful Device</h2>
+      <p>A cyberpunk novel of mutual aid, analog soul, and the human
+        spirit — penned by a human in 2020, published on March 4th,
+        2026. <em>March Forth.</em></p>
+      <div class="book-card">
+        <div class="book-cover"> 
+          <!-- UPDATED IMAGE TAG BELOW -->
+          <img src="https://raw.githubusercontent.com/jiandamonique/jiandamonique.github.io/main/my-beautiful-device.jpg" alt="My Beautiful Device book cover" onerror="this.parentElement.style.background='#ede8dc'; this.parentElement.style.minHeight='240px';"> 
+        </div>
+        <div class="book-info">
+          <h3>My Beautiful Device</h3>
+          <p class="book-sub">Volume I: Stasis &nbsp;·&nbsp; Series Book
+            1</p>
+          <div class="book-tags"> <span class="book-tag">Cyberpunk
+              Sci-Fi</span> <span class="book-tag">Dystopia</span> <span
+              class="book-tag">LGBTQ+</span> <span class="book-tag">Analog
+              Wellness</span> <span class="book-tag">Mutual Aid</span>
+            <span class="book-tag">Anti-Algorithm</span> </div>
+          <p> In the hollowed-out silence of a near-future dystopia,
+            protagonist They Them — a coder whose memory splits under
+            pressure — fights to build a helper device for
+            psycho-spiritual survival. Originally manifested as a
+            prophetic audiobook time capsule, this is a tactile journey
+            through analog grit, community care, and the enduring
+            software of the human soul. </p>
+          <p style="font-style:italic; font-size:0.88rem;"> "Even in a
+            world of Stasis, the human spirit can't be hard-coded." </p>
+          <div class="book-buy"> <a
+              href="https://www.smashwords.com/books/view/1981644"
+              class="btn btn-terra" target="_blank">Smashwords · $3</a>
+            <a href="https://www.amazon.com/My-Beautiful-Device-Jianda-Monique/dp/B0GS1HVKX4"
+              class="btn btn-outline" target="_blank">Amazon</a> <a
+href="https://www.barnesandnoble.com/w/my-beautiful-device-jianda-monique/1149614044"
+              class="btn btn-outline" target="_blank">Barnes &amp; Noble</a>
+          </div>
+          <p class="march-note"> <span>🌿</span> Published March 4,
+            2026 — <em>March Forth</em> — a date that's a loving
+            exhortation. ISBN: 9798224096664 </p>
+        </div>
+      </div>
+    </section>
+    <!-- ── PROJECTS ── -->
+    <section id="projects">
+      <p class="section-label">// projects &amp; code</p>
+      <h2>What I'm Building</h2>
+      <p>Open-source, build-in-public. The work is ongoing — the roadmap
+        is honest.</p>
+      <div class="project-grid">
+        <div class="project-card">
+          <p class="project-card-label">🌱 Main Project</p>
+          <span class="status-pill status-wip">WIP · 2026 Revival</span>
+          <h3 style="margin-top:0.5rem;">Artist Mutual Aid Directory</h3>
+          <p>A curated resource directory for BIPOC &amp; LGBTQ+ artists
+            — housing, healthcare, grants, and direct aid. Built with
+            vanilla HTML/CSS/JS. Born from the 2021 Kaggle/Google BIPOC
+            Data Fellowship.</p>
+          <a
+            href="https://github.com/jiandamonique/google-kaggle-mutual-aid-artist"
+            target="_blank">github.com/jiandamonique →</a> </div>
+        <div class="project-card">
+          <p class="project-card-label">📝 Fellowship</p>
+          <span class="status-pill status-active">Documented</span>
+          <h3 style="margin-top:0.5rem;">2021 Kaggle BIPOC Data
+            Fellowship</h3>
+          <p>3-month mentored data science fellowship. Completed Kaggle
+            Data Visualization curriculum. Architected a
+            Python/BeautifulSoup → Pandas → Jekyll data pipeline for the
+            mutual aid site.</p>
+          <a href="https://www.kaggle.com/bipoc2021-project-showcase"
+            target="_blank">View the 2021 Showcase →</a> </div>
+        <div class="project-card">
+          <p class="project-card-label">✍️ Blog - Medium<br>
+          </p>
+          <span class="status-pill status-active">Published</span>
+          <h3 style="margin-top:0.5rem;">Oversharing What's Overlooked</h3>
+          <p>My 2021 Kaggle BIPOC fellowship blog — building a mutual
+            aid service with code, community, and resilience. 216 claps
+            on Medium.</p>
+          <a
+href="https://jiandamonique.medium.com/oversharing-whats-overlooked-3ef8c0a4a52b"
+            target="_blank">Read on Medium →</a> </div>
+        <div class="project-card">
+          <p class="project-card-label">📖 Book Repo</p>
+          <span class="status-pill status-wip">Coming Soon</span>
+          <h3 style="margin-top:0.5rem;">My Beautiful Device —
+            Repository</h3>
+          <p>A dedicated GitHub repository for the novel — housing
+            provenance documentation, analog origins, and the
+            open-source philosophy behind the work.</p>
+          <a href="https://github.com/jiandamonique" target="_blank">github.com/jiandamonique
+            →</a> </div>
+        <div class="project-card">
+          <p class="project-card-label">🌐 Open Source</p>
+          <span class="status-pill status-active">Contributed</span>
+          <h3 style="margin-top:0.5rem;">freeCodeCamp LearnToCode RPG</h3>
+          <p>(This is a placeholder that's not indicative of my skill
+            set. My time on te command line has been fostering others'
+            projects, primarily. Stay tuned please.)<br>
+            Open source contribution to freeCodeCamp's LearnToCodeRPG
+            project — logging development issues to improve the learning
+            experience for new coders.</p>
+          <a
+            href="https://github.com/freeCodeCamp/LearnToCodeRPG/issues/96"
+            target="_blank">View Contribution →</a> </div>
+        <div class="project-card">
+          <p class="project-card-label">☁️ Future Vision</p>
+          <span class="status-pill status-future">Roadmapped</span>
+          <h3 style="margin-top:0.5rem;">Mutual Aid</h3>
+          <p>Initiatives to complete the charted Kaggle program roadmap
+            and further develop mutual aid efforts. .</p>
+          <a
+            href="https://github.com/jiandamonique/google-kaggle-mutual-aid-artist"
+            target="_blank">Follow the Project →</a> </div>
+      </div>
+    </section>
+    <!-- ── RESEARCH ── -->
+    <div class="about-bg" id="research">
+      <section>
+        <p class="section-label">// research &amp; publications</p>
+        <h2>Scholarly Contributions</h2>
+        <p> During my year with the UCSF Epidemiology Team (2020–2021),
+          I contributed to public health research in mathematical
+          modeling, statistical analysis, and epidemiological
+          surveillance — with a focus on COVID-19, BIPOC populations,
+          and disease transmission dynamics. </p>
+        <div class="pub-list">
+          <div class="pub-item">
+            <h4>Estimating Effective Reproduction Numbers Using
+              Wastewater Data from Multiple Sewersheds for SARS-CoV-2 in
+              California Counties</h4>
+            <p class="pub-authors">Kwan, Nathan Murthy, <strong>Jianda
+                Monique</strong>, Eugene T. Richardson, Rae Wannier,
+              Travis Porco, et al. — UCSF / Francis I. Proctor
+              Foundation</p>
+            <p class="pub-venue">Epidemiology &amp; Infection ·
+              ScienceDirect · 2024</p>
+            <a class="pub-link"
+href="https://www.sciencedirect.com/science/article/pii/S1755436524000641"
+              target="_blank">View Publication →</a> </div>
+          <div class="pub-item">
+            <h4>COVID-19 Surveillance &amp; Epidemiological Modeling —
+              UCSF Research Contribution</h4>
+            <p class="pub-authors"><strong>Jianda Monique</strong>, et
+              al. — UCSF Epidemiology Team, Francis I. Proctor
+              Foundation</p>
+            <p class="pub-venue">PubMed Central (PMC) · PMC8077580</p>
+            <a class="pub-link"
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8077580/"
+              target="_blank">View on PMC →</a> </div>
+          <div class="pub-item">
+            <h4>COVID-19 Epidemiological Research — Preprint</h4>
+            <p class="pub-authors"><strong>Jianda Monique</strong>, et
+              al. — UCSF Epidemiology Team</p>
+            <p class="pub-venue">HAL Open Science · hal-03452133</p>
+            <a class="pub-link" href="https://hal.science/hal-03452133"
+              target="_blank">View Preprint →</a> </div>
+          <div class="pub-item open-source-item">
+            <h4>Open Source Contribution — LearnToCodeRPG Diagnostics</h4>
+            <p class="pub-authors"><strong>Jianda Monique</strong></p>
+            <p class="pub-venue">freeCodeCamp · GitHub Open Source</p>
+            <a class="pub-link"
+              href="https://github.com/freeCodeCamp/LearnToCodeRPG/issues/96"
+              target="_blank">View Contribution →</a> </div>
+        </div>
+        <p class="mt-md" style="font-size:0.85rem; font-style:italic;">
+          🏆 COVID-19 Data Hero Award Nominee — <a
+            href="https://dataheroawards.org/tag/the-press/"
+            style="color:var(--sage-dark);">dataheroawards.org</a> </p>
+      </section>
+    </div>
+    <!-- ── SKILLS ── -->
+    <div class="skills-bg">
+      <section>
+        <p class="section-label">// skills &amp; tools</p>
+        <h2>What I Work With</h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>Languages</h4>
+            <div class="skill-list"> <span class="skill-pill">Python</span>
+              <span class="skill-pill">R</span> <span
+                class="skill-pill">HTML</span> <span class="skill-pill">CSS</span>
+              <span class="skill-pill">JavaScript</span> <span
+                class="skill-pill">PHP</span> <span class="skill-pill">LaTeX</span>
+              <span class="skill-pill">MATLAB</span> </div>
+          </div>
+          <div class="skill-group">
+            <h4>Libraries &amp; Tools</h4>
+            <div class="skill-list"> <span class="skill-pill">Pandas</span>
+              <span class="skill-pill">BeautifulSoup</span> <span
+                class="skill-pill">Tidyverse</span> <span
+                class="skill-pill">Jekyll</span> <span
+                class="skill-pill">jQuery</span> <span
+                class="skill-pill">Git / GitHub</span> </div>
+          </div>
+          <div class="skill-group">
+            <h4>Data Science</h4>
+            <div class="skill-list"> <span class="skill-pill">Machine
+                Learning</span> <span class="skill-pill">Data
+                Visualization</span> <span class="skill-pill">Statistical
+                Modeling</span> <span class="skill-pill">Epidemiology</span>
+              <span class="skill-pill">Stochastic Systems</span> </div>
+          </div>
+          <div class="skill-group">
+            <h4>Creative &amp; Strategy</h4>
+            <div class="skill-list"> <span class="skill-pill">Grant
+                Writing</span> <span class="skill-pill">SEO / Content
+                Strategy</span> <span class="skill-pill">Project
+                Coordination</span> <span class="skill-pill">Community
+                Outreach</span> <span class="skill-pill">Scientific
+                Writing</span> </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- ── CONNECT ── -->
+    <section id="connect">
+      <p class="section-label">// connect</p>
+      <h2>Presence ~ Prisms<br>
+      </h2>
+      <p>Come build with me, follow the project, or just say hey.</p>
+      <div class="connect-grid"> <a
+          href="https://github.com/jiandamonique" class="connect-card"
+          target="_blank"> <span class="connect-icon">🐙</span> GitHub
+        </a> <a href="https://www.linkedin.com/in/jiandamonique"
+          class="connect-card" target="_blank"> <span
+            class="connect-icon">💼</span> LinkedIn </a> <a
+          href="https://jiandamonique.medium.com" class="connect-card"
+          target="_blank"> <span class="connect-icon">✍️</span> Medium
+        </a> <a href="https://www.jiandamonique.com"
+          class="connect-card" target="_blank"> <span
+            class="connect-icon">🌐</span> Website </a> <a
+          href="https://www.smashwords.com/profile/view/Jianda_Monique"
+          class="connect-card" target="_blank"> <span
+            class="connect-icon">📗</span> Smashwords </a> <a
+          href="mailto:@" class="connect-card"> <span
+            class="connect-icon">✉️</span> Contact </a> </div>
+      <!-- Support strip -->
+      <div class="support-strip">
+        <h3>Support the Work 🌿</h3>
+        <p> My Mutual Aid and other project are unfunded and
+          independent. If you believe in what this project is building —
+          resources for BIPOC and LGBTQ+ artists and others needing
+          support and self-help resources — any contribution helps. Or
+          just share the story. </p>
+        <div class="support-links"> <a
+            href="https://venmo.com/jayevajohnson" class="btn
+            btn-outline" target="_blank">💸 Venmo</a> <a
+            href="https://www.paypal.com/paypalme/jmcommunity"
+            class="btn btn-outline" target="_blank">💳 PayPal</a> <a
+            href="http://www.gofundme.com/f/help-me-develop-artist-mutual-aid-site"
+            class="btn btn-outline" target="_blank">❤️ GoFundMe</a> <a
+            href="https://github.com/sponsors" class="btn btn-outline"
+            target="_blank">⭐ GitHub Sponsors</a> </div>
+      </div>
+    </section>
+    <!-- ── FOOTER ── -->
+    <footer>
+      <p class="footer-name">Jianda Monique</p>
+      <p> <a href="https://github.com/jiandamonique">GitHub</a>
+        &nbsp;·&nbsp; <a
+          href="https://www.linkedin.com/in/jiandamonique">LinkedIn</a>
+        &nbsp;·&nbsp; <a href="https://jiandamonique.medium.com">Medium</a>
+        &nbsp;·&nbsp; <a href="https://www.jiandamonique.com">Website</a>
+      </p>
+      <p style="margin-top:0.5rem;"> 2021 Kaggle/Google BIPOC Data
+        Fellow · UCSF Epidemiology Contributor · Open Source </p>
+      <p class="footer-quote">Art heals. Code connects. Each one, reach
+        one.</p>
+    </footer>
+    <script>
+    // Smooth scroll with offset for sticky nav
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = 70;
+          window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+  </body>
+</html>
