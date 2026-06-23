@@ -1,0 +1,14 @@
+# Force a custom extension to a specific language
+*.myext linguist-language=Python
+
+# Un-ignore test or doc folders Linguist skips by default
+tests/** linguist-detectable=true
+docs/scripts/** linguist-detectable=true
+
+# Mark vendor/library folders so they don't skew stats
+vendor/** linguist-vendored=true
+node_modules/** linguist-vendored=true
+
+# Completely exclude generated or data files
+*.min.js linguist-generated=true
+data/*.json linguist-documentation=true
