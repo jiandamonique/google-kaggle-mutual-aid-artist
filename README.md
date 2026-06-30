@@ -1,7 +1,7 @@
 # Artist Mutual Aid Directory 🦋
 ### Open-source resource directory for BIPOC and LGBTQ+ artists
 
-**[→ View the Live Directory (https://jiandamonique.github.io/google-kaggle-mutual-aid-artist/)]**
+**[→ View the Live Directory](https://jiandamonique.github.io/google-kaggle-mutual-aid-artist/)**
 
 > *"Each one, reach one. Each one, teach one."*
 
@@ -47,14 +47,20 @@ Zero technical background required to ask. That's the point.
 
 ## Data Sources
 
-| Source | Status |
-|--------|--------|
-| Sample data (curated placeholder entries) | Current |
-| NEA / arts.gov publicly available datasets | Planned |
-| MutualAidHub | Planned |
-| 211.org API | Planned (v2) |
+The original 2021 plan assumed bulk public datasets (NEA/arts.gov exports, scraped directories, broad search via Kaggle and Google's filetype search) would supply most of the directory's content. That landscape has changed. Bulk dataset search has gotten significantly harder since 2021 — search engines deprioritized raw file-type queries, several previously reliable sources turned out to be inconsistent or no longer maintained, and platforms like Kaggle are built for competition-ready ML data, not niche civic/social-service directories.
 
-Real data integration follows the pipeline designed during the 2021 Kaggle/Google BIPOC Data Fellowship: Python → BeautifulSoup → Pandas → structured output → this directory.
+So the approach has shifted: **this directory is now built on manually vetted data**, not bulk import. Every resource listed has been individually researched and verified — slower, but more accurate, and arguably more honest about what a small, independent mutual aid project can realistically maintain.
+
+| Source | Method | Status |
+|--------|--------|--------|
+| Sample data | Curated placeholder entries across all 7 categories, manually researched | Launched |
+| Community submissions | Submitted via the site's "Submit a Resource" tab, reviewed before inclusion | Live |
+| Manually vetted additions | Individually researched and added over time as capacity allows | Ongoing |
+| NEA / arts.gov | Originally planned as a bulk source — found unreliable on review | Deferred |
+| MutualAidHub | Originally planned as a bulk source — no clean export available; usable as a manual reference | Deferred |
+| 211.org API | Still a possible future integration if API access becomes feasible | Future / Unconfirmed
+
+This is a smaller, slower path than the original 2021 plan — and it's the realistic one. Manual curation isn't a stopgap here; it's the actual method going forward.
 
 ---
 
@@ -76,12 +82,10 @@ The full story: [Oversharing What's Overlooked](https://jiandamonique.medium.com
 
 - [x] Prototype directory built — sample data, all 7 categories, live search and filters
 - [x] Single-page tab navigation — lightweight, zippable
-- [x] Project continuity documented — honest arc from 2021 to 2026
-- [ ] Update all repo descriptions
-- [ ] Integrate NEA / arts.gov dataset
-- [ ] Integrate MutualAidHub data
+- [x] Project continuity documented — discussion of hiatus from 2021 to 2026
+- [x] Update all repo descriptions
+- [ ] Continue to integrate data
 - [ ] Build out artist-specific resource sections
-- [ ] v2 — 211.org API integration, geographic filtering
 
 ---
 
@@ -92,7 +96,6 @@ The full story: [Oversharing What's Overlooked](https://jiandamonique.medium.com
 | [google-kaggle-mutual-aid-artist](https://github.com/jiandamonique/google-kaggle-mutual-aid-artist) | This repo — live directory |
 | [kaggle-google-mutual-aid-devpage](https://github.com/jiandamonique/kaggle-google-mutual-aid-devpage) | Back end archive and dev hub |
 | [google-kaggle-mutual-aid-artist.github.io](https://github.com/jiandamonique/google-kaggle-mutual-aid-artist.github.io) | Archived 2021 Jekyll fellowship site |
-| [jiandamonique.github.io](https://github.com/jiandamonique/jiandamonique.github.io) | Personal portfolio |
 | [Google Drive — Project Archive](https://drive.google.com/drive/u/1/folders/1QodJ016_nw7tzJJ9T8KN6AYhJN0JRI_P) | Planning worksheets, dataset research, milestone tracking, and fellowship documentation — the origin of the project |
 
 ---
