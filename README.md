@@ -60,7 +60,7 @@ So the approach has shifted: **this directory is now built on manually vetted da
 | MutualAidHub | Originally planned as a bulk source — no clean export available; usable as a manual reference | Deferred |
 | 211.org API | Still a possible future integration if API access becomes feasible | Future / Unconfirmed
 
-This is a smaller, slower path than the original 2021 plan — and it's the realistic one. Manual curation isn't a stopgap here; it's the actual method going forward.
+This is a smaller, slower path than the original 2021 plan — and it's the realistic one. Manual curation is re-injected back into the process due to data availability shifts.Will ramp back up to automation.
 
 ---
 
