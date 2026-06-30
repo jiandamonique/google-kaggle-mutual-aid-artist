@@ -1,7 +1,7 @@
 # Artist Mutual Aid Directory 🦋
 ### Open-source resource directory for BIPOC and LGBTQ+ artists
 
-**[→ View the Live Directory](https://jiandamonique.github.io/google-kaggle-mutual-aid-artist/)**
+**[→ View the Live Directory (https://jiandamonique.github.io/google-kaggle-mutual-aid-artist/)]**
 
 > *"Each one, reach one. Each one, teach one."*
 
