@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Mutual Aid Directory · Jianda Monique</title>
+  <meta name="description" content="A curated resource directory for BIPOC and LGBTQ+ artists — housing, healthcare, grants, direct aid, legal support, and mutual aid networks. Built in public by Jianda Monique.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --cream:      #f2f7f2;
+      --warm:       #e6efe6;
+      --deep:       #162418;
+      --muted:      #5c6b5c;
+      --border:     rgba(40,80,45,0.18);
+      --shadow:     0 4px 24px rgba(22,36,24,0.08);
+      --shadow-sm:  0 2px 10px rgba(22,36,24,0.06);
+
+      /* category palette */
+      --c-housing:    #c07a52;
+      --c-health:     #7193a4;
+      --c-grants:     #d4a84b;
+      --c-aid:        #9b6e9e;
+      --c-legal:      #5a8a78;
+      --c-community:  #b05a6a;
+      --c-mutual:     #6b9e8a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--deep);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* subtle grain texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.9rem 2rem;
+      background: #162418;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-logo {
+      font-family: 'Lora', serif; font-size: 0.95rem; font-weight: 500;
+      color: #fff; text-decoration: none; letter-spacing: 0.01em;
+    }
+    .nav-logo span { color: #7ec99a; }
+
+
+    /* ── TAB SYSTEM ── */
+
+    .tab-bar-wrapper {
+      background: #162418;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .tab-bar {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 0 2rem;
+      display: flex; gap: 0;
+    }
+    .tab-label {
+      padding: 0.85rem 1.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.45);
+      cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .tab-label:hover { color: rgba(255,255,255,0.8); }
+
+    .tab-label.active { color: #fff !important; border-bottom: 2px solid #7ec99a; font-weight: 600; }
+
+/* ── SHARED PANEL WRAPPER ── */
+    .panel-inner {
+      max-width: 960px; margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ── DIRECTORY PANEL ── */
+
+    /* hero strip */
+    .dir-hero {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: #3d7a52;
+      margin-bottom: 0.5rem;
+    }
+    .dir-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--deep); margin-bottom: 0.6rem;
+    }
+    .dir-hero h1 em { font-style: italic; color: var(--c-mutual); }
+    .dir-hero p { color: var(--muted); font-size: 0.93rem; max-width: 560px; }
+    .prototype-badge {
+      display: inline-block; margin-top: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.08em;
+      color: #7a5c0e;
+      background: rgba(212,168,75,0.12);
+      border: 1px solid rgba(212,168,75,0.3);
+      border-radius: 0.3rem; padding: 0.3rem 0.7rem;
+    }
+
+    /* search + filters */
+    .dir-controls { margin-bottom: 1.5rem; }
+    .search-wrap { position: relative; margin-bottom: 1rem; }
+    .search-wrap input {
+      width: 100%; max-width: 400px;
+      padding: 0.58rem 1rem 0.58rem 2.3rem;
+      border: 1.5px solid var(--border);
+      border-radius: 0.35rem;
+      background: var(--warm);
+      color: var(--deep);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem; transition: border-color 0.2s;
+    }
+    .search-wrap input:focus { outline: none; border-color: var(--c-mutual); }
+    .search-wrap input::placeholder { color: var(--muted); }
+    .search-icon {
+      position: absolute; left: 0.7rem; top: 50%;
+      transform: translateY(-50%); font-size: 0.85rem;
+      color: var(--muted); pointer-events: none;
+    }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      padding: 0.28rem 0.8rem; border-radius: 2rem;
+      font-size: 0.77rem; font-weight: 500;
+      border: 1.5px solid var(--border);
+      background: var(--cream); color: var(--muted);
+      cursor: pointer; transition: all 0.18s;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .chip:hover { border-color: var(--deep); color: var(--deep); }
+    .chip.active { background: var(--cream); color: #162418; border-color: #162418; font-weight: 600; }
+
+    /* category color chips */
+    .chip[data-cat="Housing & Emergency Shelter"].active   { background: var(--c-housing); border-color: var(--c-housing); }
+    .chip[data-cat="Healthcare & Mental Health"].active    { background: var(--c-health);  border-color: var(--c-health); }
+    .chip[data-cat="Grants & Funding"].active              { background: var(--c-grants);  border-color: var(--c-grants); }
+    .chip[data-cat="Direct Financial Aid"].active          { background: var(--c-aid);     border-color: var(--c-aid); }
+    .chip[data-cat="Legal & Advocacy"].active              { background: var(--c-legal);   border-color: var(--c-legal); }
+    .chip[data-cat="Community Networks"].active            { background: var(--c-community); border-color: var(--c-community); }
+    .chip[data-cat="Mutual Aid"].active                    { background: var(--c-mutual);  border-color: var(--c-mutual); }
+
+    .results-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.67rem; letter-spacing: 0.06em;
+      color: var(--muted); margin: 0.9rem 0 1.2rem;
+    }
+    .results-meta span { color: var(--deep); font-weight: 600; }
+
+    /* grid */
+    .dir-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+      gap: 1rem;
+    }
+
+    /* card */
+    .resource-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--c-mutual);
+      border-radius: 0.6rem;
+      padding: 1.2rem 1.3rem;
+      display: flex; flex-direction: column;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .resource-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .resource-card[data-cat="Housing & Emergency Shelter"]  { border-left-color: var(--c-housing); }
+    .resource-card[data-cat="Healthcare & Mental Health"]   { border-left-color: var(--c-health); }
+    .resource-card[data-cat="Grants & Funding"]             { border-left-color: var(--c-grants); }
+    .resource-card[data-cat="Direct Financial Aid"]         { border-left-color: var(--c-aid); }
+    .resource-card[data-cat="Legal & Advocacy"]             { border-left-color: var(--c-legal); }
+    .resource-card[data-cat="Community Networks"]           { border-left-color: var(--c-community); }
+    .resource-card[data-cat="Mutual Aid"]                   { border-left-color: var(--c-mutual); }
+
+    .card-cat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 0.35rem;
+    }
+    .resource-card[data-cat="Housing & Emergency Shelter"]  .card-cat-label { color: var(--c-housing); }
+    .resource-card[data-cat="Healthcare & Mental Health"]   .card-cat-label { color: var(--c-health); }
+    .resource-card[data-cat="Grants & Funding"]             .card-cat-label { color: var(--c-grants); }
+    .resource-card[data-cat="Direct Financial Aid"]         .card-cat-label { color: var(--c-aid); }
+    .resource-card[data-cat="Legal & Advocacy"]             .card-cat-label { color: var(--c-legal); }
+    .resource-card[data-cat="Community Networks"]           .card-cat-label { color: var(--c-community); }
+    .resource-card[data-cat="Mutual Aid"]                   .card-cat-label { color: var(--c-mutual); }
+
+    .card-name {
+      font-family: 'Lora', serif; font-size: 0.97rem; font-weight: 500;
+      color: var(--deep); margin-bottom: 0.5rem; line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 0.84rem; color: var(--muted);
+      margin-bottom: 0.7rem; flex: 1;
+    }
+    .card-eligibility {
+      font-size: 0.78rem; color: var(--muted);
+      padding: 0.4rem 0.65rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 0.3rem;
+      margin-bottom: 0.8rem;
+    }
+    .card-eligibility strong {
+      display: block; font-size: 0.62rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin-bottom: 0.15rem;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.8rem; }
+    .card-tag {
+      font-size: 0.65rem; padding: 0.1rem 0.45rem;
+      border-radius: 2rem; border: 1px solid var(--border);
+      color: var(--muted); background: var(--cream);
+    }
+    .card-link {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--deep); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      margin-top: auto;
+    }
+    .card-link:hover { text-decoration: underline; }
+    .card-link::after { content: ' →'; }
+
+    .empty-state {
+      grid-column: 1/-1; text-align: center;
+      padding: 3rem 1rem; color: var(--muted);
+    }
+    .empty-state p { font-family: 'Lora', serif; font-style: italic; }
+    .reset-btn {
+      display: inline-block; margin-top: 0.8rem;
+      font-size: 0.83rem; color: var(--c-mutual);
+      cursor: pointer; text-decoration: underline;
+      background: none; border: none; font-family: inherit;
+    }
+
+    /* ── ABOUT PANEL ── */
+    .about-hero {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--deep); margin-bottom: 0.8rem;
+    }
+    .about-hero h1 em { font-style: italic; color: var(--c-mutual); }
+    .about-hero p { color: var(--muted); font-size: 0.93rem; max-width: 580px; margin-bottom: 0.8rem; }
+
+    .about-pull {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 1.05rem; color: var(--muted);
+      border-left: 3px solid var(--c-mutual);
+      padding-left: 1rem; margin: 1.5rem 0;
+      max-width: 540px;
+    }
+
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 560px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 0.6rem; padding: 1.2rem;
+    }
+    .about-card h3 {
+      font-family: 'Lora', serif; font-size: 0.92rem;
+      color: var(--deep); margin-bottom: 0.4rem;
+    }
+    .about-card p { font-size: 0.87rem; color: var(--muted); }
+
+    .data-sources {
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .data-sources h2 {
+      font-family: 'Lora', serif; font-size: 1.2rem;
+      color: var(--deep); margin-bottom: 0.8rem;
+    }
+    .source-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .source-item {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      padding: 0.8rem 1rem;
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 0.5rem; font-size: 0.87rem;
+    }
+    .source-item .source-name { font-weight: 600; color: var(--deep); display: block; }
+    .source-item .source-desc { color: var(--muted); font-size: 0.82rem; }
+    .source-status {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.15rem 0.5rem; border-radius: 2rem; white-space: nowrap;
+      margin-left: auto; align-self: center;
+    }
+    .status-sample  { background: rgba(212,168,75,0.15);  color: #7a5c0e; }
+    .status-planned { background: rgba(113,147,164,0.15); color: #3d5f70; }
+    .status-live    { background: rgba(107,158,138,0.15); color: #3d6b5a; }
+
+    /* ── ARCHIVE PANEL ── */
+    .archive-hero { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .archive-hero h1 {
+      font-family: 'Lora', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500; color: var(--deep); margin-bottom: 0.6rem;
+    }
+    .archive-hero h1 em { font-style: italic; color: var(--c-mutual); }
+    .archive-hero p { color: var(--muted); font-size: 0.93rem; max-width: 560px; }
+
+    .timeline { margin-top: 1.5rem; position: relative; }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 5.5rem; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item {
+      display: grid; grid-template-columns: 5rem 1fr;
+      gap: 1.5rem; margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .timeline-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 600;
+      color: var(--muted); text-align: right;
+      padding-top: 0.15rem;
+    }
+    .timeline-dot {
+      position: absolute; left: calc(5.5rem - 4px); top: 0.4rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--c-mutual); border: 2px solid var(--cream);
+    }
+    .timeline-content h4 {
+      font-family: 'Lora', serif; font-size: 0.93rem;
+      color: var(--deep); margin-bottom: 0.2rem;
+    }
+    .timeline-content p { font-size: 0.84rem; color: var(--muted); }
+    .timeline-content a { color: var(--c-mutual); text-decoration: none; font-size: 0.82rem; }
+    .timeline-content a:hover { text-decoration: underline; }
+
+    /* support strip */
+    .support-strip {
+      margin-top: 2.5rem; padding: 1.5rem 1.8rem;
+      background: #fff; border: 1px solid var(--border);
+      border-left: 4px solid var(--c-mutual);
+      border-radius: 0.6rem;
+    }
+    .support-strip h3 {
+      font-family: 'Lora', serif; font-size: 1rem;
+      color: var(--deep); margin-bottom: 0.4rem;
+    }
+    .support-strip p { font-size: 0.87rem; color: var(--muted); margin-bottom: 0.8rem; }
+    .support-links { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .btn-sm {
+      padding: 0.38rem 0.9rem; border-radius: 0.3rem;
+      font-size: 0.8rem; font-weight: 600; text-decoration: none;
+      border: 1.5px solid var(--border); color: var(--deep);
+      background: var(--cream); transition: all 0.18s;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .btn-sm:hover { border-color: var(--c-mutual); color: var(--c-mutual); }
+
+    /* ── SUBMIT PANEL ── */
+    .submit-hero {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .submit-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--deep); margin-bottom: 0.6rem;
+    }
+    .submit-hero h1 em { font-style: italic; color: var(--c-mutual); }
+    .submit-hero p { color: var(--muted); font-size: 0.93rem; max-width: 560px; }
+
+    .submit-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--c-mutual);
+      border-radius: 0.6rem;
+      padding: 1.8rem;
+      max-width: 640px;
+    }
+    .ar-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 0.9rem; }
+    @media (max-width: 600px) { .ar-row { grid-template-columns: 1fr; } }
+    .ar-field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .ar-field.full { grid-column: 1 / -1; }
+    .ar-field label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+      font-weight: 600; color: var(--c-mutual);
+    }
+    .ar-field input, .ar-field select, .ar-field textarea {
+      border: 1.5px solid var(--border);
+      border-radius: 0.35rem;
+      padding: 0.58rem 0.8rem;
+      font-size: 0.88rem;
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--warm);
+      color: var(--deep);
+    }
+    .ar-field input:focus, .ar-field select:focus, .ar-field textarea:focus { outline: none; border-color: var(--c-mutual); }
+    .ar-field textarea { resize: vertical; min-height: 80px; }
+    .ar-submit {
+      margin-top: 0.4rem;
+      background: var(--deep);
+      color: #fff;
+      border: none;
+      border-radius: 0.35rem;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .ar-submit:hover { background: #0d1810; }
+    .ar-submit:disabled { opacity: 0.6; cursor: wait; }
+    .ar-note {
+      font-size: 0.78rem; color: var(--muted);
+      margin-top: 0.7rem; font-style: italic;
+    }
+    .ar-success {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0.45rem;
+      background: rgba(107,158,138,0.15);
+      color: #3d6b5a;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* ── PRIMER PANEL ── */
+    .primer-hero {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .primer-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--deep); margin-bottom: 0.6rem;
+    }
+    .primer-hero h1 em { font-style: italic; color: var(--c-mutual); }
+    .primer-hero p { color: var(--muted); font-size: 0.93rem; max-width: 560px; }
+    .primer-hero .primer-meta { font-size: 0.83rem; color: var(--muted); margin-top: 0.6rem; font-style: italic; }
+
+    .primer-subnav {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .primer-subnav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); text-decoration: none;
+      padding: 0.35rem 0.8rem; border-radius: 2rem;
+      border: 1.5px solid var(--border);
+      transition: all 0.18s;
+    }
+    .primer-subnav a:hover { border-color: var(--c-mutual); color: var(--c-mutual); }
+
+    .primer-section { margin-bottom: 2.6rem; }
+    .primer-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em;
+      color: #3d7a52; margin-bottom: 0.4rem;
+    }
+    .primer-section h2 {
+      font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 500;
+      color: var(--deep); margin-bottom: 0.3rem; line-height: 1.25;
+    }
+    .primer-section .h2-sub {
+      font-family: 'Lora', serif; font-style: italic; color: var(--muted);
+      font-size: 0.95rem; margin-bottom: 1.1rem;
+    }
+    .primer-section > p { color: var(--deep); font-size: 0.93rem; margin-bottom: 1rem; max-width: 620px; }
+    .primer-section p.muted { color: var(--muted); font-style: italic; font-size: 0.9rem; }
+
+    .primer-resource-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--c-mutual);
+      border-radius: 0.5rem;
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .primer-resource-card h4 { font-family: 'Lora', serif; font-size: 0.95rem; color: var(--deep); margin-bottom: 0.15rem; }
+    .primer-resource-card .desc { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .primer-resource-card .url { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--c-mutual); }
+
+    .primer-step { display: flex; gap: 0.9rem; margin-bottom: 1.2rem; }
+    .primer-step-num {
+      flex-shrink: 0; font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 0.95rem; color: var(--c-housing); width: 1.5rem;
+    }
+    .primer-step h3 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--deep); margin-bottom: 0.25rem; }
+    .primer-step p { margin-bottom: 0; font-size: 0.88rem; color: var(--muted); }
+
+    .primer-principle { margin-bottom: 1.3rem; }
+    .primer-principle h3 { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--c-mutual); margin-bottom: 0.3rem; }
+    .primer-principle p { font-size: 0.9rem; color: var(--deep); margin-bottom: 0; max-width: 600px; }
+
+    .primer-callout {
+      background: rgba(107,158,138,0.08);
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+      padding: 1.1rem 1.4rem;
+      margin: 1.4rem 0;
+      max-width: 620px;
+    }
+    .primer-callout p {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--deep); font-size: 0.92rem; margin-bottom: 0;
+    }
+
+    .primer-next-list { list-style: none; margin-top: 0.6rem; max-width: 560px; }
+    .primer-next-list li {
+      padding: 0.5rem 0 0.5rem 1.4rem; position: relative;
+      color: var(--muted); font-size: 0.88rem;
+      border-bottom: 1px dashed var(--border);
+    }
+    .primer-next-list li::before { content: '○'; position: absolute; left: 0; color: var(--c-mutual); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      background: #162418;
+      text-align: center; padding: 1.8rem 2rem;
+      font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    }
+    footer a { color: rgba(255,255,255,0.35); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .footer-link { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    footer .footer-note { margin-top: 0.4rem; font-size: 0.74rem; font-style: italic; color: rgba(255,255,255,0.3); }
+
+    @media (max-width: 640px) {
+      nav { padding: 0.8rem 1rem; }
+      .tab-bar { padding: 0 1rem; overflow-x: auto; }
+      .tab-label { padding: 0.8rem 0.9rem; font-size: 0.65rem; }
+      .panel-inner { padding: 1.8rem 1.2rem 3rem; }
+      .dir-grid { grid-template-columns: 1fr; }
+      .timeline::before { left: 4rem; }
+      .timeline-item { grid-template-columns: 4rem 1fr; }
+      .timeline-dot { left: calc(4rem - 4px); }
+    }
+    .tab-panel { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-logo">Artist <span>Mutual Aid</span> Directory</div>
+  </nav>
+
+  <!-- ── TABS ── -->
+  <div class="tab-bar-wrapper">
+  <div class="tab-bar">
+    <label class="tab-label" data-tab="panel-directory">// Directory</label>
+    <label class="tab-label" data-tab="panel-about">// About</label>
+    <label class="tab-label" data-tab="panel-submit">// Submit a Resource</label>
+    <label class="tab-label" data-tab="panel-primer">// Primer</label>
+  </div>
+  </div><!-- /tab-bar-wrapper -->
+
+  <!-- ── PANELS ── -->
+  <div class="panels">
+
+    <!-- DIRECTORY PANEL -->
+    <div class="tab-panel" id="panel-directory">
+      <div class="panel-inner">
+        <div class="dir-hero">
+          <div class="eyebrow">// artist mutual aid directory</div>
+          <h1>Resources for BIPOC &amp;<br><em>LGBTQ+ Artists</em></h1>
+          <p>Housing, healthcare, grants, direct aid, legal support, and mutual aid networks. National coverage. Free to use.</p>
+          <div class="prototype-badge">⚙ Prototype · Sample Data · Additional entries pending</div>
+        </div>
+
+        <div class="dir-controls">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Search by name, need, or keyword…" autocomplete="off">
+          </div>
+          <div class="filter-chips" id="filter-chips">
+            <button class="chip active" data-cat="all">All</button>
+            <button class="chip" data-cat="Housing & Emergency Shelter">Housing</button>
+            <button class="chip" data-cat="Healthcare & Mental Health">Healthcare</button>
+            <button class="chip" data-cat="Grants & Funding">Grants</button>
+            <button class="chip" data-cat="Direct Financial Aid">Direct Aid</button>
+            <button class="chip" data-cat="Legal & Advocacy">Legal</button>
+            <button class="chip" data-cat="Community Networks">Community</button>
+            <button class="chip" data-cat="Mutual Aid">Mutual Aid</button>
+          </div>
+          <div class="results-meta" id="results-meta"></div>
+        </div>
+
+        <div class="dir-grid" id="dir-grid"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT PANEL -->
+    <div class="tab-panel" id="panel-about">
+      <div class="panel-inner">
+        <div class="about-hero">
+          <div class="eyebrow">// about this project</div>
+          <h1>Built from <em>lived experience</em><br>and open-source care</h1>
+          <p>The Artist Mutual Aid Directory was born during the 2021 Kaggle/Google BIPOC Data Fellowship. The idea was simple: use data science to make it easier for BIPOC and LGBTQ+ artists to find the help that already exists.</p>
+          <p>The fellowship ended. The need didn't. Five years later, the project is being revived — same architecture, deeper roots.</p>
+        </div>
+
+        <blockquote class="about-pull">
+          "Each one, reach one. Each one, teach one."
+        </blockquote>
+
+        <div class="about-grid">
+          <div class="about-card">
+            <h3>🌱 The Vision</h3>
+            <p>A zero-dependency, open-source resource directory that any artist can use, any community can fork, and any mutual aid network can contribute to.</p>
+          </div>
+          <div class="about-card">
+            <h3>🔬 The Method</h3>
+            <p>Python · BeautifulSoup · Pandas → structured data → vanilla HTML/CSS/JS. No framework. No server. Zippable, forkable, lightweight by design.</p>
+          </div>
+          <div class="about-card">
+            <h3>👤 Who It's For</h3>
+            <p>BIPOC artists. LGBTQ+ creatives. Anyone in the arts who needs housing, healthcare, legal help, or emergency funds — and doesn't know where to start.</p>
+          </div>
+          <div class="about-card">
+            <h3>🤝 Built By</h3>
+            <p>Jianda Monique — Jr. Data Scientist, author, musician, and multidisciplinary artist. 2021 Kaggle/Google BIPOC Data Fellow. Mentored by Prasun Kumar Mishra and Julia Elliott.</p>
+          </div>
+        </div>
+
+        <div class="data-sources">
+          <h2>Data Sources</h2>
+          <div class="source-list">
+            <div class="source-item">
+              <div>
+                <span class="source-name">Sample Data</span>
+                <span class="source-desc">Curated placeholder entries across all 7 categories — proving the architecture works.</span>
+              </div>
+              <span class="source-status status-sample">Current</span>
+            </div>
+            <div class="source-item">
+              <div>
+                <span class="source-name">NEA / arts.gov</span>
+                <span class="source-desc">Publicly available arts funding and grant data from the National Endowment for the Arts.</span>
+              </div>
+              <span class="source-status status-planned">Planned</span>
+            </div>
+            <div class="source-item">
+              <div>
+                <span class="source-name">MutualAidHub</span>
+                <span class="source-desc">National directory of mutual aid groups. Integration planned via CSV export and direct partnership.</span>
+              </div>
+              <span class="source-status status-planned">Planned</span>
+            </div>
+            <div class="source-item">
+              <div>
+                <span class="source-name">211.org API</span>
+                <span class="source-desc">National social services database — housing, food, healthcare. Broadens coverage significantly.</span>
+              </div>
+              <span class="source-status status-planned">Planned</span>
+            </div>
+            <div class="source-item">
+              <div>
+                <span class="source-name">Community Submissions</span>
+                <span class="source-desc">Resources submitted directly via the Submit a Resource tab — reviewed before inclusion.</span>
+              </div>
+              <span class="source-status status-live">Live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT PANEL -->
+    <div class="tab-panel" id="panel-submit">
+      <div class="panel-inner">
+        <div class="submit-hero">
+          <div class="eyebrow">// add to the directory</div>
+          <h1>Know a resource that<br>should be <em>here?</em></h1>
+          <p>Submit it below. Every submission goes into a review sheet first — nothing posts to the live directory automatically.</p>
+        </div>
+
+        <div class="submit-card">
+          <form id="resourceForm">
+            <div class="ar-row">
+              <div class="ar-field">
+                <label for="r-name">Resource Name *</label>
+                <input type="text" id="r-name" required>
+              </div>
+              <div class="ar-field">
+                <label for="r-category">Category *</label>
+                <select id="r-category" required>
+                  <option value="">Choose one</option>
+                  <option value="Housing & Emergency Shelter">Housing &amp; Emergency Shelter</option>
+                  <option value="Healthcare & Mental Health">Healthcare &amp; Mental Health</option>
+                  <option value="Grants & Funding">Grants &amp; Funding</option>
+                  <option value="Direct Financial Aid">Direct Financial Aid</option>
+                  <option value="Legal & Advocacy">Legal &amp; Advocacy</option>
+                  <option value="Community Networks">Community Networks</option>
+                  <option value="Mutual Aid">Mutual Aid</option>
+                </select>
+              </div>
+            </div>
+            <div class="ar-row">
+              <div class="ar-field full">
+                <label for="r-link">Link or Contact Info *</label>
+                <input type="text" id="r-link" placeholder="https:// or phone / email" required>
+              </div>
+            </div>
+            <div class="ar-row">
+              <div class="ar-field full">
+                <label for="r-notes">What Should People Know?</label>
+                <textarea id="r-notes" placeholder="Eligibility, location, anything that helps someone decide if this is for them."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="ar-submit" id="arSubmitBtn">Submit Resource</button>
+            <p class="ar-note">No login required. Submissions feed our review sheet — nothing goes live untouched.</p>
+          </form>
+
+          <div class="ar-success" id="arSuccess">🌿 Thank you — your submission was received and will be reviewed shortly.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIMER PANEL -->
+    <div class="tab-panel" id="panel-primer">
+      <div class="panel-inner">
+        <div class="primer-hero">
+          <div class="eyebrow">// a living document</div>
+          <h1>A Mutual Aid <em>Primer</em></h1>
+          <p>For artists, organizers, and anyone who needs help — or wants to give it.</p>
+          <p class="primer-meta">Second edition always coming.</p>
+        </div>
+
+        <nav class="primer-subnav">
+          <a href="#primer-need-help">Need Help</a>
+          <a href="#primer-find">Find Resources</a>
+          <a href="#primer-what-is">What It Is</a>
+          <a href="#primer-next">What's Next</a>
+        </nav>
+
+        <!-- SECTION 0 -->
+        <div class="primer-section" id="primer-need-help">
+          <div class="primer-section-label">// section 0</div>
+          <h2>Need Help Right Now?</h2>
+          <p>If you opened this looking for immediate support — you're in the right place. Start here. Everything else can wait.</p>
+
+          <div class="primer-resource-card">
+            <h4>211.org</h4>
+            <div class="desc">Free helpline — housing, food, utilities, healthcare. By zip code.</div>
+            <div class="url">Call or text 211 · 211.org</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>Mutual Aid Hub</h4>
+            <div class="desc">Find a local mutual aid network near you.</div>
+            <div class="url">mutualaidhub.org</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>National Queer &amp; Trans Artists</h4>
+            <div class="desc">Emergency funds for LGBTQ+ artists.</div>
+            <div class="url">nqta.org</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>Artists' Fellowship</h4>
+            <div class="desc">Emergency aid for professional artists in need.</div>
+            <div class="url">artistsfellowship.org</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>Foundation for Contemporary Arts</h4>
+            <div class="desc">Emergency grants for artists.</div>
+            <div class="url">foundationforcontemporaryarts.org</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>GoFundMe</h4>
+            <div class="desc">Peer-to-peer fundraising. No shame. No gatekeeping.</div>
+            <div class="url">gofundme.com</div>
+          </div>
+          <div class="primer-resource-card">
+            <h4>Venmo / PayPal</h4>
+            <div class="desc">Ask your community directly. It is okay to ask.</div>
+            <div class="url">—</div>
+          </div>
+
+          <h3 style="font-family:'Lora',serif; font-size:1.05rem; color:var(--deep); margin:1.4rem 0 0.4rem;">A note on asking for help</h3>
+          <p>You may have been told — directly or indirectly — that needing help is a character flaw. It isn't. Mutual aid exists precisely because systems fail people. Asking is not weakness. Asking is how the network works.</p>
+          <p class="muted">You may also encounter compassion fatigue — in your community, in your friends, even in yourself. People who love you may still be unable to give. That is not a verdict on your worth or your need. Keep looking. The resource exists. This primer will help you find it.</p>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="primer-section" id="primer-find">
+          <div class="primer-section-label">// section 1</div>
+          <h2>How to Find Resources</h2>
+          <p>Navigating mutual aid and emergency resource directories can feel overwhelming — especially when you are already in crisis. Here is a simple framework.</p>
+
+          <div class="primer-step">
+            <div class="primer-step-num">1</div>
+            <div>
+              <h3>Start with 211</h3>
+              <p>211.org is the fastest on-ramp. It connects you to local services — food, housing, utilities, mental health — by zip code. Call, text, or use the website.</p>
+            </div>
+          </div>
+          <div class="primer-step">
+            <div class="primer-step-num">2</div>
+            <div>
+              <h3>Search by category, not just keyword</h3>
+              <p>Most directories organize by need type: housing, healthcare, grants, direct financial aid, legal. Try searching the category you need most rather than a broad term like "help."</p>
+            </div>
+          </div>
+          <div class="primer-step">
+            <div class="primer-step-num">3</div>
+            <div>
+              <h3>Check eligibility before you apply</h3>
+              <p>Many resources are specific — BIPOC artists, LGBTQ+ individuals, residents of a particular city. Read the eligibility criteria first to save yourself time and energy.</p>
+            </div>
+          </div>
+          <div class="primer-step">
+            <div class="primer-step-num">4</div>
+            <div>
+              <h3>Ask in community spaces</h3>
+              <p>Facebook groups, Discord servers, mutual aid networks, and local artist collectives often know about resources that never make it to official directories. Ask openly. Someone knows.</p>
+            </div>
+          </div>
+          <div class="primer-step">
+            <div class="primer-step-num">5</div>
+            <div>
+              <h3>Document everything</h3>
+              <p>Keep a simple log of what you applied for, when, and any reference numbers. Follow up. Systems are slow and understaffed — persistence matters.</p>
+            </div>
+          </div>
+
+          <div class="primer-callout">
+            <p>"The mutual practice of giving and receiving is an everyday ritual when we know true love. Giving is the way we also learn how to receive." — <strong style="font-style: normal;">All About Love: New Vision</strong>, bell hooks</p>
+          </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="primer-section" id="primer-what-is">
+          <div class="primer-section-label">// section 2</div>
+          <h2>What Mutual Aid Is</h2>
+          <p class="h2-sub">A living idea, not a fixed definition.</p>
+          <p>Mutual aid resists a single clean definition — and that resistance is intentional. Need is individual. Community is local. What works in one neighborhood may not work in another. What follows are guidelines, not rules.</p>
+
+          <div class="primer-principle">
+            <h3>It is reciprocal, not charitable</h3>
+            <p>Charity flows one direction — from those who have, to those who don't. Mutual aid moves in all directions. The person receiving today may be the person giving tomorrow. There is no hierarchy of worthiness.</p>
+          </div>
+          <div class="primer-principle">
+            <h3>It is community-driven, not institution-driven</h3>
+            <p>Mutual aid networks are built by the people who use them. They respond faster, more personally, and more flexibly than institutions — because they are accountable to neighbors, not to boards or grant cycles.</p>
+          </div>
+          <div class="primer-principle">
+            <h3>It is political by nature</h3>
+            <p>Mutual aid acknowledges that people are in need because systems have failed them — not because of personal failing. It does not ask people to be deserving. It asks only that we show up for each other.</p>
+          </div>
+          <div class="primer-principle">
+            <h3>It includes you</h3>
+            <p>If you are building a mutual aid network, organizing resources, or doing the labor of care — you are also allowed to receive. Paying yourself for your labor is ethical. Accepting support while you give it is not a contradiction. It is the whole point.</p>
+          </div>
+
+          <hr style="border:none; border-top:1.5px solid var(--border); margin:1.4rem 0;">
+          <h3 style="font-family:'Lora',serif; font-size:1.05rem; color:var(--deep); margin-bottom:0.4rem;">On compassion fatigue — and the people who make it harder</h3>
+          <p>Sometimes the people closest to you run out of capacity to give. Sometimes they express that unkindly. Friends can be petty about fundraising. People who love you can still say the wrong thing when you ask for help. This is real, it is painful, and it is worth naming out loud.</p>
+          <p class="muted">Compassion fatigue is a genuine phenomenon — not an excuse, but a real limitation. It does not mean your need is too much. It means the people around you are also carrying weight. Widen the net. Look beyond your immediate circle. The resource exists.</p>
+        </div>
+
+        <!-- COMING NEXT -->
+        <div class="primer-section" id="primer-next">
+          <div class="primer-section-label">// coming next</div>
+          <h2>Sections 3 · 4 · 5</h2>
+          <p>This primer is a living document. The following sections are in progress:</p>
+          <ul class="primer-next-list">
+            <li>Section 3 — How to navigate deeper resource directories</li>
+            <li>Section 4 — How to build your own mutual aid directory</li>
+            <li>Section 5 — History, lineage, and further reading</li>
+          </ul>
+
+          <hr style="border:none; border-top:1.5px solid var(--border); margin:1.4rem 0;">
+          <h3 style="font-family:'Lora',serif; font-size:1.05rem; color:var(--deep); margin-bottom:0.4rem;">Artist Mutual Aid Directory</h3>
+          <p>Open-source, forkable, free. Built for BIPOC and LGBTQ+ artists. <a href="javascript:void(0)" onclick="switchTab('panel-directory')" style="color:var(--c-mutual); font-weight:600;">Browse the directory →</a></p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /panels -->
+
+
+  <!-- Hidden iframe + bridge form — submits silently to a connected Google Form / Sheet.
+       See setup steps in the comment above the form below. -->
+  <iframe name="hidden_google_form_target" id="hidden_google_form_target" style="display:none;"></iframe>
+
+  <!--
+    ── ONE-TIME SETUP ──
+    1. Create a Google Form titled "Artist Mutual Aid Directory — Resource Submission"
+       with 4 questions in this order:
+         1. Resource name        (Short answer)
+         2. Category              (Short answer or Dropdown)
+         3. Link or contact info  (Short answer)
+         4. What should people know? (Paragraph)
+    2. 3-dot menu → "Get pre-filled link" → fill dummy answers → "Get link"
+    3. Copy the FORM_ID from the URL (between /d/e/ and /viewform)
+    4. Copy each entry.XXXXXXXXX number into the 4 inputs below, in order
+    5. Link a Google Sheet to the form's Responses tab (green Sheets icon) —
+       export anytime via File → Download → Microsoft Excel
+  -->
+  <form
+    id="googleFormBridge"
+    action="https://docs.google.com/forms/d/e/FORM_ID/formResponse"
+    method="POST"
+    target="hidden_google_form_target"
+    style="display:none;"
+  >
+    <input type="text" name="entry.111111111" id="g-name">
+    <input type="text" name="entry.222222222" id="g-category">
+    <input type="text" name="entry.333333333" id="g-link">
+    <input type="text" name="entry.444444444" id="g-notes">
+  </form>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>
+      <a href="https://github.com/jiandamonique/google-kaggle-mutual-aid-artist" target="_blank" class="footer-link">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://jiandamonique.medium.com/oversharing-whats-overlooked-3ef8c0a4a52b" target="_blank" class="footer-link">Origin Story</a>
+    </p>
+    <p class="footer-note">Open source · Built in public · Art heals. Code connects. Each one, reach one.</p>
+  </footer>
+
+  <script>
+    const RESOURCES = [
+      { id:"001", name:"Artist Relief Fund", category:"Grants & Funding", tags:["BIPOC","LGBTQ+","Emergency"], description:"Emergency grants for artists facing financial crisis due to illness, natural disaster, or other unexpected hardship. Accepts applications on a rolling basis.", eligibility:"Working artists of any discipline facing emergency financial need.", link:"https://artistrelief.org" },
+      { id:"002", name:"Foundation for Contemporary Arts — Emergency Grants", category:"Grants & Funding", tags:["BIPOC","Emergency","Visual Art","Performance"], description:"Emergency assistance for artists whose livelihood has been impacted by unexpected events. Covers visual, performing, and literary artists.", eligibility:"Artists with a history of presenting experimental work.", link:"https://www.foundationforcontemporaryarts.org/grants/emergency-grants/" },
+      { id:"003", name:"PEN America Writers' Emergency Fund", category:"Grants & Funding", tags:["BIPOC","LGBTQ+","Writers","Emergency"], description:"Emergency financial assistance for writers in acute financial crisis. Covers fiction, nonfiction, poetry, journalism, and translation.", eligibility:"Published writers experiencing sudden financial emergency.", link:"https://pen.org/writers-emergency-fund/" },
+      { id:"004", name:"Sweet Relief Musicians Fund", category:"Direct Financial Aid", tags:["Musicians","BIPOC","LGBTQ+","Healthcare","Emergency"], description:"Financial assistance to career musicians struggling with illness, disability, or age-related problems.", eligibility:"Career musicians who have worked professionally for at least five years.", link:"https://www.sweetrelief.org" },
+      { id:"005", name:"The Actors Fund", category:"Direct Financial Aid", tags:["Performers","BIPOC","LGBTQ+","Healthcare","Housing"], description:"Comprehensive social services and emergency financial assistance for performing arts and entertainment professionals.", eligibility:"Anyone who has worked professionally in performing arts or entertainment.", link:"https://actorsfund.org" },
+      { id:"006", name:"Mutual Aid Hub", category:"Mutual Aid", tags:["BIPOC","LGBTQ+","Community","Directory"], description:"A searchable directory of mutual aid groups across the US. Find local networks offering food, supplies, rent assistance, and community support.", eligibility:"Open to all. Search by location to find local groups.", link:"https://www.mutualaidhub.org" },
+      { id:"007", name:"COVID-19 Mutual Aid Network — Arts & Culture", category:"Mutual Aid", tags:["BIPOC","LGBTQ+","Arts","Community"], description:"Peer-to-peer support network for artists and cultural workers offering supplies, childcare, housing leads, and skills exchange.", eligibility:"Artists and cultural workers of all disciplines.", link:"https://www.mutualaidhub.org" },
+      { id:"008", name:"Trans Lifeline — Microgrants", category:"Direct Financial Aid", tags:["LGBTQ+","Trans","Emergency"], description:"Microgrants for trans people in financial crisis. Covers legal name changes, gender-affirming medical costs, and other emergency needs.", eligibility:"Trans people experiencing financial hardship.", link:"https://translifeline.org/microgrants/" },
+      { id:"009", name:"Housing Opportunities for People with AIDS (HOPWA)", category:"Housing & Emergency Shelter", tags:["LGBTQ+","BIPOC","HIV/AIDS","Housing"], description:"Federal program providing housing assistance and supportive services for low-income people living with HIV/AIDS and their families.", eligibility:"Low-income individuals living with HIV/AIDS.", link:"https://www.hud.gov/hopwa" },
+      { id:"010", name:"National Queer and Trans Therapists of Color Network", category:"Healthcare & Mental Health", tags:["LGBTQ+","BIPOC","Trans","Mental Health","Sliding Scale"], description:"A healing justice organization committed to transforming mental health access for queer and trans people of color. Therapist directory and mental health fund.", eligibility:"QTPOC seeking affirming mental health care. Sliding scale and fund assistance available.", link:"https://www.nqttcn.com" },
+      { id:"011", name:"Open Path Collective", category:"Healthcare & Mental Health", tags:["BIPOC","LGBTQ+","Mental Health","Sliding Scale"], description:"Network of mental health professionals offering sessions between $30–$80 for individuals in financial need.", eligibility:"Individuals and families with household income under $100,000.", link:"https://openpathcollective.org" },
+      { id:"012", name:"Volunteer Lawyers for the Arts", category:"Legal & Advocacy", tags:["BIPOC","LGBTQ+","Legal","Arts","IP"], description:"Free and low-cost legal services for artists and arts organizations — contracts, intellectual property, nonprofit formation, and more.", eligibility:"Artists and arts organizations who cannot afford private legal counsel.", link:"https://vlany.org" },
+      { id:"013", name:"Black Artists + Designers Guild", category:"Community Networks", tags:["BIPOC","Black","Network","Visual Art","Design"], description:"A collective of independent Black artists and designers supporting each other through community, resources, and amplification.", eligibility:"Black artists and designers.", link:"https://badguild.info" },
+      { id:"014", name:"Allied Media Projects", category:"Community Networks", tags:["BIPOC","LGBTQ+","Media","Fiscal Sponsorship"], description:"Fiscal sponsorship and community infrastructure for media-based projects working toward social change.", eligibility:"Projects using media and technology for social justice.", link:"https://alliedmedia.org" },
+      { id:"015", name:"The Laundromat Project", category:"Mutual Aid", tags:["BIPOC","Community","Arts","Grants"], description:"Invests in artists of color to create and teach art within their own communities. Grants, residencies, and community programming.", eligibility:"Artists of color working within their own communities.", link:"https://laundromatproject.org" }
+    ];
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function renderCards() {
+      const grid = document.getElementById('dir-grid');
+      const meta = document.getElementById('results-meta');
+      const filtered = RESOURCES.filter(r => {
+        const matchCat = activeCategory === 'all' || r.category === activeCategory;
+        const q = searchQuery.toLowerCase();
+        const matchSearch = !q ||
+          r.name.toLowerCase().includes(q) ||
+          r.description.toLowerCase().includes(q) ||
+          r.tags.some(t => t.toLowerCase().includes(q)) ||
+          r.eligibility.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      meta.innerHTML = `Showing <span>${filtered.length}</span> of ${RESOURCES.length} resources`;
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="empty-state"><p>No resources match that search.</p><button class="reset-btn" onclick="resetFilters()">Clear filters</button></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(r => `
+        <div class="resource-card" data-cat="${r.category}">
+          <div class="card-cat-label">${r.category}</div>
+          <div class="card-name">${r.name}</div>
+          <div class="card-desc">${r.description}</div>
+          <div class="card-eligibility"><strong>Who it's for</strong>${r.eligibility}</div>
+          <div class="card-tags">${r.tags.map(t=>`<span class="card-tag">${t}</span>`).join('')}</div>
+          <a href="${r.link}" class="card-link" target="_blank" rel="noopener">Visit Resource</a>
+        </div>`).join('');
+    }
+
+    document.getElementById('filter-chips').addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCategory = chip.dataset.cat;
+      renderCards();
+    });
+
+    document.getElementById('search').addEventListener('input', e => {
+      searchQuery = e.target.value;
+      renderCards();
+    });
+
+    function resetFilters() {
+      searchQuery = ''; activeCategory = 'all';
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      document.querySelector('.chip[data-cat="all"]').classList.add('active');
+      renderCards();
+    }
+
+    renderCards();
+  </script>
+
+  <script id="resource-submission">
+    // ── RESOURCE SUBMISSION FORM → Google Form bridge ──
+    document.getElementById('resourceForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      document.getElementById('g-name').value = document.getElementById('r-name').value;
+      document.getElementById('g-category').value = document.getElementById('r-category').value;
+      document.getElementById('g-link').value = document.getElementById('r-link').value;
+      document.getElementById('g-notes').value = document.getElementById('r-notes').value;
+
+      var btn = document.getElementById('arSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      document.getElementById('googleFormBridge').submit();
+
+      setTimeout(function () {
+        document.getElementById('resourceForm').reset();
+        document.getElementById('arSuccess').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Submit Resource';
+      }, 800);
+    });
+  </script>
+
+  <script id="tab-system">
+    // ── TAB SWITCHING ──
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-label').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+      document.querySelector(`.tab-label[data-tab="${tabId}"]`).classList.add('active');
+      document.getElementById(tabId).style.display = 'block';
+    }
+    document.querySelectorAll('.tab-label').forEach(label => {
+      label.addEventListener('click', () => switchTab(label.dataset.tab));
+    });
+    // init
+    switchTab('panel-directory');
+  </script>
+</body>
+</html>
